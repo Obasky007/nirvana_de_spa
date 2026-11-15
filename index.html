@@ -3,18 +3,27 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Nirvana De Spa | Luxury Beauty Salon & Spa in Abuja</title>
-    <meta name="description" content="Nirvana De Spa is a luxury beauty salon and spa in Abuja, offering braids, haircut, nails, pedicure, and spa services at Century Mall.">
+    <meta name="description" content="Hair, nails, braids and restorative spa care at Century Mall, Abuja. Check availability with Nirvana De Spa on WhatsApp.">
     <meta name="theme-color" content="#8E1B2E">
+    <link rel="canonical" href="https://nirvanadespa.vercel.app/">
+    <link rel="icon" type="image/svg+xml" href="assets/nirvana-icon.svg">
+    <link rel="preload" href="assets/nirvana-hero-poster.svg" as="image" type="image/svg+xml">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nirvanadespa.vercel.app/">
+    <meta property="og:site_name" content="Nirvana De Spa">
     <meta property="og:title" content="Nirvana De Spa | Luxury Beauty Salon & Spa in Abuja">
-    <meta property="og:description" content="Nirvana De Spa is a luxury beauty salon and spa in Abuja, offering braids, haircut, nails, pedicure, and spa services at Century Mall.">
-    <meta property="og:image" content="assets/salon-poster.jpg">
+    <meta property="og:description" content="Hair, nails, braids and restorative spa care at Century Mall, Abuja.">
+    <meta property="og:image" content="https://nirvanadespa.vercel.app/assets/nirvana-social-card.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://nirvanadespa.vercel.app/">
     <meta name="twitter:title" content="Nirvana De Spa | Luxury Beauty Salon & Spa in Abuja">
-    <meta name="twitter:description" content="Nirvana De Spa is a luxury beauty salon and spa in Abuja, offering braids, haircut, nails, pedicure, and spa services at Century Mall.">
-    <meta name="twitter:image" content="assets/salon-poster.jpg">
+    <meta name="twitter:description" content="Hair, nails, braids and restorative spa care at Century Mall, Abuja.">
+    <meta name="twitter:image" content="https://nirvanadespa.vercel.app/assets/nirvana-social-card.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.woff2" as="font" type="font/woff2" crossorigin>
@@ -26,6 +35,9 @@
             "@context": "https://schema.org",
             "@type": "BeautySalon",
             "name": "Nirvana De Spa",
+            "url": "https://nirvanadespa.vercel.app/",
+            "image": "https://nirvanadespa.vercel.app/assets/nirvana-social-card.png",
+            "email": "nirvanadespa2@gmail.com",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Suite A9, Century Mall, Oladipo Diya",
@@ -33,6 +45,10 @@
                 "addressCountry": "NG"
             },
             "telephone": "+2349069615677",
+            "areaServed": {
+                "@type": "City",
+                "name": "Abuja"
+            },
             "openingHours": [
                 "Mo-Sa 09:30-20:00",
                 "Su 13:00-20:00"
@@ -45,31 +61,32 @@
 </head>
 
 <body>
-    <nav class="nav" id="nav">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <nav class="nav" id="nav" aria-label="Primary navigation">
         <div class="container nav-inner">
             <a class="brand" href="#home" aria-label="Nirvana De Spa home">
                 <span class="brand-mark">N</span>
                 <span class="brand-text">NIRVANA DE SPA</span>
             </a>
 
-            <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-controls="navMenu" aria-expanded="false">
+            <button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-controls="navMenu" aria-expanded="false">
                 <span></span><span></span><span></span>
             </button>
 
-            <div class="nav-menu" id="navMenu" aria-hidden="true">
+            <div class="nav-menu" id="navMenu" aria-hidden="false">
                 <a href="#home">Home</a>
                 <a href="#services">Services</a>
                 <a href="#experience">Experience</a>
                 <a href="#gallery">Gallery</a>
                 <a href="#contact">Contact</a>
-                <a href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." class="nav-book" target="_blank" rel="noopener">Book Appointment</a>
+                <a data-booking-service="____" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." class="nav-book" target="_blank" rel="noopener">Book Appointment</a>
             </div>
         </div>
     </nav>
 
-    <main>
+    <main id="main-content">
         <section class="hero" id="home">
-            <video class="hero-video" autoplay muted loop playsinline aria-hidden="true">
+            <video class="hero-video" muted loop playsinline preload="none" poster="assets/nirvana-hero-poster.svg" aria-hidden="true" tabindex="-1">
                 <source src="nirvana-flawless-touch.mp4" type="video/mp4">
             </video>
             <div class="container hero-shell">
@@ -80,10 +97,10 @@
                         <span class="hero-line"><em>refined into</em></span>
                         <span class="hero-line">a ritual.</span>
                     </h1>
-                    <p class="lede">An elevated beauty and spa experience at Century Mall, Abuja — crafted around your time, your style, and the way you want to feel.</p>
+                    <p class="lede">Hair, nails, braids and restorative spa care at Century Mall, Abuja.</p>
 
                     <div class="cta-row">
-                        <a class="btn btn-primary" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">Book an Appointment</a>
+                        <a class="btn btn-primary" data-booking-service="____" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">Check availability on WhatsApp</a>
                         <a class="btn btn-secondary" href="#services">Explore Services</a>
                     </div>
                 </div>
@@ -95,19 +112,42 @@
             <div class="container split-intro">
                 <div class="intro-copy reveal">
                     <p class="section-eyebrow">Luxury beauty salon &amp; spa</p>
-                    <h2>Your glow, beautifully considered.</h2>
+                    <h2>Care for your hair, nails and well-being.</h2>
                 </div>
                 <div class="intro-detail reveal">
-                    <p>At Nirvana De Spa, the experience is designed to feel personal, polished, and restorative. We create time for beauty rituals that leave you renewed, confident, and deeply at ease.</p>
+                    <p>At Suite A9, Century Mall, Nirvana De Spa offers braids, haircuts, nail care, pedicure and spa services. Message us to ask about current options and availability.</p>
                 </div>
             </div>
         </section>
 
-        <section class="section brand-story">
-            <div class="container brand-story-shell reveal">
-                <p class="section-eyebrow">A softer kind of luxury</p>
-                <h2>More than beauty.<br>A moment to reset.</h2>
-                <p>At Nirvana De Spa, beauty is treated as a ritual — a pause from the rush of the day, a space to feel polished, present, and deeply cared for.</p>
+        <section class="section what-to-expect" aria-labelledby="expect-title">
+            <div class="container">
+                <div class="expect-heading reveal">
+                    <p class="section-eyebrow">Your visit, made simple</p>
+                    <h2 id="expect-title">What to expect</h2>
+                </div>
+                <ol class="expect-list">
+                    <li class="expect-step reveal">
+                        <span class="expect-number">01</span>
+                        <h3>Arrive</h3>
+                        <p>Find us at Suite A9, Century Mall, Abuja.</p>
+                    </li>
+                    <li class="expect-step reveal reveal-d1">
+                        <span class="expect-number">02</span>
+                        <h3>Choose</h3>
+                        <p>Ask about the service options and current pricing.</p>
+                    </li>
+                    <li class="expect-step reveal reveal-d2">
+                        <span class="expect-number">03</span>
+                        <h3>Enjoy your appointment</h3>
+                        <p>Take time for the service you chose.</p>
+                    </li>
+                    <li class="expect-step reveal reveal-d3">
+                        <span class="expect-number">04</span>
+                        <h3>Plan your next visit</h3>
+                        <p>Message us on WhatsApp when you are ready to book again.</p>
+                    </li>
+                </ol>
             </div>
         </section>
 
@@ -118,40 +158,80 @@
                         <h2>Beauty rituals designed for your rhythm.</h2>
                     </div>
 
-                    <div class="service-grid">
-                        <article class="service-card reveal reveal-d1">
-                            <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
-                            <span class="service-number" aria-hidden="true">01</span>
-                            <h3>Braids</h3>
-                            <p>Elegant braided styles with a precise finish and lasting presence.</p>
+                    <div class="service-stack">
+                        <article class="service-card">
+                            <img class="service-image" src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&amp;fit=crop&amp;w=1600&amp;q=80" alt="" data-placeholder-fallback width="1600" height="1000" loading="lazy" decoding="async">
+                            <div class="service-content">
+                                <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+                                <span class="service-number" aria-hidden="true">01 / 05</span>
+                                <h3>Braids</h3>
+                                <p>Elegant braided styles with a precise finish and lasting presence.</p>
+                                <details class="service-details">
+                                    <summary>Options &amp; pricing</summary>
+                                    <p>Ask us for available braid options and current pricing.</p>
+                                    <a data-booking-service="Braids" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">Ask about braids</a>
+                                </details>
+                            </div>
                         </article>
 
-                        <article class="service-card reveal reveal-d2">
-                            <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-scissors"></i></span>
-                            <span class="service-number" aria-hidden="true">02</span>
-                            <h3>Haircut</h3>
-                            <p>Sharp, tailored cuts that frame your look with ease and confidence.</p>
+                        <article class="service-card">
+                            <img class="service-image" src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&amp;fit=crop&amp;w=1600&amp;q=80" alt="" data-placeholder-fallback width="1600" height="1000" loading="lazy" decoding="async">
+                            <div class="service-content">
+                                <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-scissors"></i></span>
+                                <span class="service-number" aria-hidden="true">02 / 05</span>
+                                <h3>Haircut</h3>
+                                <p>Sharp, tailored cuts that frame your look with ease and confidence.</p>
+                                <details class="service-details">
+                                    <summary>Options &amp; pricing</summary>
+                                    <p>Ask us about available haircut options and current pricing.</p>
+                                    <a data-booking-service="Haircut" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">Ask about haircuts</a>
+                                </details>
+                            </div>
                         </article>
 
-                        <article class="service-card reveal reveal-d3">
-                            <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-hand-sparkles"></i></span>
-                            <span class="service-number" aria-hidden="true">03</span>
-                            <h3>Nails</h3>
-                            <p>Polished finishes and refined detailing for a clean, elevated look.</p>
+                        <article class="service-card">
+                            <img class="service-image" src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&amp;fit=crop&amp;w=1600&amp;q=80" alt="" data-placeholder-fallback width="1600" height="1000" loading="lazy" decoding="async">
+                            <div class="service-content">
+                                <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-hand-sparkles"></i></span>
+                                <span class="service-number" aria-hidden="true">03 / 05</span>
+                                <h3>Nails</h3>
+                                <p>Polished finishes and refined detailing for a clean, elevated look.</p>
+                                <details class="service-details">
+                                    <summary>Options &amp; pricing</summary>
+                                    <p>Ask us about available nail options and current pricing.</p>
+                                    <a data-booking-service="Nails" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">Ask about nails</a>
+                                </details>
+                            </div>
                         </article>
 
-                        <article class="service-card reveal reveal-d4">
-                            <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-spa"></i></span>
-                            <span class="service-number" aria-hidden="true">04</span>
-                            <h3>Pedicure</h3>
-                            <p>Comfort-first care with a fresh, finished result that feels luxurious.</p>
+                        <article class="service-card">
+                            <img class="service-image" src="https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?auto=format&amp;fit=crop&amp;w=1600&amp;q=80" alt="" data-placeholder-fallback width="1600" height="1000" loading="lazy" decoding="async">
+                            <div class="service-content">
+                                <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-spa"></i></span>
+                                <span class="service-number" aria-hidden="true">04 / 05</span>
+                                <h3>Pedicure</h3>
+                                <p>Comfort-first care with a fresh, finished result that feels luxurious.</p>
+                                <details class="service-details">
+                                    <summary>Options &amp; pricing</summary>
+                                    <p>Ask us about available pedicure options and current pricing.</p>
+                                    <a data-booking-service="Pedicure" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">Ask about pedicures</a>
+                                </details>
+                            </div>
                         </article>
 
-                        <article class="service-card reveal reveal-d5">
-                            <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-leaf"></i></span>
-                            <span class="service-number" aria-hidden="true">05</span>
-                            <h3>Spa</h3>
-                            <p>Restorative pampering designed to reset your mind, body, and mood.</p>
+                        <article class="service-card">
+                            <img class="service-image" src="https://images.unsplash.com/photo-1521590832167-7ae2f7d9f1af?auto=format&amp;fit=crop&amp;w=1600&amp;q=80" alt="" data-placeholder-fallback width="1600" height="1000" loading="lazy" decoding="async">
+                            <div class="service-content">
+                                <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-leaf"></i></span>
+                                <span class="service-number" aria-hidden="true">05 / 05</span>
+                                <h3>Spa</h3>
+                                <p>Restorative pampering designed to reset your mind, body, and mood.</p>
+                                <details class="service-details">
+                                    <summary>Options &amp; pricing</summary>
+                                    <p>Ask us about available spa options and current pricing.</p>
+                                    <a data-booking-service="Spa" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">Ask about spa services</a>
+                                </details>
+                            </div>
                         </article>
                     </div>
                 </div>
@@ -160,19 +240,18 @@
             <section class="section experience" id="experience">
                 <div class="container experience-layout">
                     <div class="experience-media reveal">
-                        <!-- TODO: replace with client's real photos -->
-                        <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80" alt="Relaxing spa and beauty treatment space" width="1200" height="1600" loading="lazy" decoding="async">
+                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80" srcset="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&amp;fit=crop&amp;w=600&amp;q=75 600w, https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&amp;fit=crop&amp;w=1200&amp;q=80 1200w" sizes="(max-width: 900px) 100vw, 50vw" alt="Beauty portrait" data-placeholder-fallback width="1200" height="1600" loading="lazy" decoding="async">
                     </div>
 
                     <div class="experience-copy reveal">
                         <p class="section-eyebrow">The experience</p>
-                        <h2>Quiet luxury, attentive detail.</h2>
-                        <p>From the moment you arrive, every detail is designed to feel calm, elevated, and tailored to you. Our space is intimate, welcoming, and thoughtfully curated for beauty rituals that feel both indulgent and effortless.</p>
+                        <h2>Beauty and spa care in Abuja.</h2>
+                        <p>Visit Nirvana De Spa at Century Mall for braids, haircuts, nails, pedicure and spa services. Contact us on WhatsApp to confirm available options and current pricing.</p>
 
                         <ul class="feature-list">
-                            <li>Warm, elevated ambience</li>
-                            <li>Refined beauty services</li>
-                            <li>Personal, calming attention</li>
+                            <li>Hair styling, braids and haircuts</li>
+                            <li>Nail care and pedicure</li>
+                            <li>Spa services at Century Mall</li>
                         </ul>
                     </div>
                 </div>
@@ -188,13 +267,12 @@
                 <div class="gallery-grid">
                     <figure class="gallery-item tall reveal">
                         <button class="gallery-trigger" type="button" aria-label="View salon hair styling">
-                            <!-- TODO: replace with client's real photos -->
-                            <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80" alt="Hair styling in a modern salon" width="900" height="1200" loading="lazy" decoding="async">
+                            <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80" srcset="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&amp;fit=crop&amp;w=480&amp;q=75 480w, https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&amp;fit=crop&amp;w=900&amp;q=80 900w" sizes="(max-width: 768px) 100vw, 40vw" alt="Hair styling at a beauty salon" data-placeholder-fallback width="900" height="1200" loading="lazy" decoding="async">
                         </button>
                         <figcaption>Artistry in every detail</figcaption>
                     </figure>
                     <figure class="gallery-item gallery-video-item reveal">
-                        <video class="gallery-video" controls muted playsinline preload="metadata" aria-label="Stitch-in cornrows at Nirvana De Spa">
+                        <video class="gallery-video" controls muted playsinline preload="none" poster="assets/nirvana-photo-placeholder.svg" aria-label="Stitch-in cornrows at Nirvana De Spa">
                             <source src="nirvana-stitch-cornrows.mp4" type="video/mp4">
                             Your browser does not support embedded videos.
                         </video>
@@ -202,22 +280,19 @@
                     </figure>
                     <figure class="gallery-item reveal">
                         <button class="gallery-trigger" type="button" aria-label="View skincare treatment">
-                            <!-- TODO: replace with client's real photos -->
-                            <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=900&q=80" alt="A calming skincare treatment" width="900" height="1200" loading="lazy" decoding="async">
+                            <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=900&q=80" srcset="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&amp;fit=crop&amp;w=480&amp;q=75 480w, https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&amp;fit=crop&amp;w=900&amp;q=80 900w" sizes="(max-width: 768px) 100vw, 30vw" alt="A beauty and skincare treatment" data-placeholder-fallback width="900" height="1200" loading="lazy" decoding="async">
                         </button>
                         <figcaption>A moment to restore</figcaption>
                     </figure>
                     <figure class="gallery-item reveal">
                         <button class="gallery-trigger" type="button" aria-label="View salon interior">
-                            <!-- TODO: replace with client's real photos -->
-                            <img src="https://images.unsplash.com/photo-1521590832167-7ae2f7d9f1af?auto=format&fit=crop&w=900&q=80" alt="Salon styling station with refined details" width="900" height="1200" loading="lazy" decoding="async">
+                            <img src="https://images.unsplash.com/photo-1521590832167-7ae2f7d9f1af?auto=format&fit=crop&w=900&q=80" srcset="https://images.unsplash.com/photo-1521590832167-7ae2f7d9f1af?auto=format&amp;fit=crop&amp;w=480&amp;q=75 480w, https://images.unsplash.com/photo-1521590832167-7ae2f7d9f1af?auto=format&amp;fit=crop&amp;w=900&amp;q=80 900w" sizes="(max-width: 768px) 100vw, 30vw" alt="Salon styling station" data-placeholder-fallback width="900" height="1200" loading="lazy" decoding="async">
                         </button>
                         <figcaption>Quiet luxury</figcaption>
                     </figure>
                     <figure class="gallery-item wide reveal">
                         <button class="gallery-trigger" type="button" aria-label="View beauty portrait">
-                            <!-- TODO: replace with client's real photos -->
-                            <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1400&q=80" alt="Beauty portrait with soft natural light" width="1400" height="900" loading="lazy" decoding="async">
+                            <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1400&q=80" srcset="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&amp;fit=crop&amp;w=700&amp;q=75 700w, https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&amp;fit=crop&amp;w=1400&amp;q=80 1400w" sizes="(max-width: 768px) 100vw, 60vw" alt="Beauty portrait" data-placeholder-fallback width="1400" height="900" loading="lazy" decoding="async">
                         </button>
                         <figcaption>Beauty, thoughtfully considered</figcaption>
                     </figure>
@@ -225,13 +300,15 @@
             </div>
         </section>
 
-        <dialog class="lightbox" aria-label="Gallery image viewer">
+        <dialog class="lightbox" aria-labelledby="gallery-dialog-title">
+            <h2 class="visually-hidden" id="gallery-dialog-title">Gallery image viewer</h2>
             <button class="lightbox-close" type="button" aria-label="Close image viewer">&times;</button>
             <button class="lightbox-prev" type="button" aria-label="Previous image">&#8249;</button>
             <figure class="lightbox-figure">
                 <img class="lightbox-image" alt="" width="1400" height="900">
                 <figcaption class="lightbox-caption"></figcaption>
             </figure>
+            <p class="visually-hidden lightbox-status" aria-live="polite" aria-atomic="true"></p>
             <button class="lightbox-next" type="button" aria-label="Next image">&#8250;</button>
         </dialog>
 
@@ -244,20 +321,16 @@
 
                 <div class="instagram-grid">
                     <div class="instagram-card reveal">
-                        <!-- TODO: replace with client's real photos -->
-                        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=900&q=80" alt="Beauty salon interior prepared for a client" width="900" height="1100" loading="lazy" decoding="async">
+                        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=900&q=80" srcset="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&amp;fit=crop&amp;w=480&amp;q=75 480w, https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&amp;fit=crop&amp;w=900&amp;q=80 900w" sizes="(max-width: 900px) 50vw, 25vw" alt="Beauty salon interior" data-placeholder-fallback width="900" height="1100" loading="lazy" decoding="async">
                     </div>
                     <div class="instagram-card reveal reveal-d1">
-                        <!-- TODO: replace with client's real photos -->
-                        <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=900&q=80" alt="Portrait celebrating a polished beauty look" width="900" height="1100" loading="lazy" decoding="async">
+                        <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=900&q=80" srcset="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&amp;fit=crop&amp;w=480&amp;q=75 480w, https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&amp;fit=crop&amp;w=900&amp;q=80 900w" sizes="(max-width: 900px) 50vw, 25vw" alt="Beauty portrait" data-placeholder-fallback width="900" height="1100" loading="lazy" decoding="async">
                     </div>
                     <div class="instagram-card reveal reveal-d2">
-                        <!-- TODO: replace with client's real photos -->
-                        <img src="https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?auto=format&fit=crop&w=900&q=80" alt="Beauty ritual captured in soft light" width="900" height="1100" loading="lazy" decoding="async">
+                        <img src="https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?auto=format&fit=crop&w=900&q=80" srcset="https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?auto=format&amp;fit=crop&amp;w=480&amp;q=75 480w, https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?auto=format&amp;fit=crop&amp;w=900&amp;q=80 900w" sizes="(max-width: 900px) 50vw, 25vw" alt="Beauty portrait" data-placeholder-fallback width="900" height="1100" loading="lazy" decoding="async">
                     </div>
                     <div class="instagram-card reveal reveal-d3">
-                        <!-- TODO: replace with client's real photos -->
-                        <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=900&q=80" alt="Elegant portrait with a natural beauty finish" width="900" height="1100" loading="lazy" decoding="async">
+                        <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=900&q=80" srcset="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&amp;fit=crop&amp;w=480&amp;q=75 480w, https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&amp;fit=crop&amp;w=900&amp;q=80 900w" sizes="(max-width: 900px) 50vw, 25vw" alt="Beauty portrait" data-placeholder-fallback width="900" height="1100" loading="lazy" decoding="async">
                     </div>
                 </div>
 
@@ -280,11 +353,11 @@
                 </div>
                 <aside class="map-card reveal">
                     <p class="section-eyebrow">Find your way</p>
-                    <h2 id="map-title">A moment away from the everyday.</h2>
+                    <h2 id="map-title">Find us at Century Mall.</h2>
                     <p class="map-address">Suite A9, Century Mall,<br>Oladipo Diya,<br>Abuja, Nigeria</p>
                     <div class="map-actions">
                         <a class="btn btn-primary" href="https://www.google.com/maps/dir/?api=1&amp;destination=Century+Mall+Oladipo+Diya+Abuja" target="_blank" rel="noopener">Get Directions</a>
-                        <a class="btn btn-secondary" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">Book via WhatsApp</a>
+                        <a class="btn btn-secondary" data-booking-service="____" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">Ask about availability</a>
                     </div>
                 </aside>
             </div>
@@ -319,7 +392,7 @@
                 <div class="booking-card reveal">
                     <div class="booking-header">
                         <span class="section-eyebrow">Opening hours</span>
-                        <a href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Book via WhatsApp</a>
+                        <a data-booking-service="____" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Book via WhatsApp</a>
                     </div>
 
                     <ul class="hours-list">
@@ -327,7 +400,7 @@
                         <li><span>Sunday</span><strong>1:00 PM – 8:00 PM</strong></li>
                     </ul>
 
-                    <a class="btn btn-primary" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Book an Appointment</a>
+                    <a class="btn btn-primary" data-booking-service="____" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Check availability</a>
                 </div>
             </div>
         </section>
@@ -336,7 +409,7 @@
             <div class="container final-cta-shell reveal">
                 <p class="section-eyebrow">Make time for yourself</p>
                 <h2>Your next beauty ritual starts here.</h2>
-                <a class="btn btn-primary" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Book an Appointment</a>
+                <a class="btn btn-primary" data-booking-service="____" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Check availability</a>
             </div>
         </section>
 
@@ -354,13 +427,21 @@
                     <a href="#contact">Contact</a>
                 </div>
 
-                <div class="footer-instagram">
+                <div class="footer-contact">
+                    <p>Suite A9, Century Mall, Oladipo Diya, Abuja</p>
+                    <a href="tel:+2349069615677">0906 961 5677</a>
+                    <a href="mailto:nirvanadespa2@gmail.com">nirvanadespa2@gmail.com</a>
                     <a href="https://www.instagram.com/nirvana_de_spa_" target="_blank" rel="noopener">@nirvana_de_spa_</a>
+                </div>
+
+                <div class="footer-actions">
+                    <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Century+Mall+Oladipo+Diya+Abuja" target="_blank" rel="noopener">Get directions</a>
+                    <a data-booking-service="____" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">Check availability</a>
                 </div>
             </div>
         </footer>
 
-    <a href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat with Nirvana De Spa on WhatsApp">
+    <a data-booking-service="____" href="https://wa.me/2349069615677?text=Hello%20Nirvana%20De%20Spa%2C%20I%20would%20like%20to%20book%20an%20appointment." class="whatsapp-float" target="_blank" rel="noopener" aria-label="Check availability with Nirvana De Spa on WhatsApp">
         <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
         <span>WhatsApp</span>
     </a>

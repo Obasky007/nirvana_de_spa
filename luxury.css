@@ -32,6 +32,34 @@ html {
     outline-offset: 4px;
 }
 
+.skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 1100;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background: var(--cream);
+    color: var(--ink);
+    transform: translateY(-180%);
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 body {
     font-family: var(--body);
     background: var(--cream);
@@ -250,7 +278,8 @@ p {
     align-items: center;
     background:
         radial-gradient(ellipse at 72% 45%, color-mix(in srgb, var(--brand) 38%, transparent), transparent 55%),
-        linear-gradient(135deg, var(--ink), var(--brand));
+        linear-gradient(135deg, rgba(20, 8, 10, 0.72), rgba(142, 27, 46, 0.42)),
+        url("assets/nirvana-hero-poster.svg") center / cover no-repeat;
     color: var(--cream);
     overflow: hidden;
 }
@@ -454,35 +483,54 @@ p {
     max-width: 33rem;
 }
 
-.brand-story {
+.what-to-expect {
     background: var(--ink);
     color: var(--cream);
 }
 
-.brand-story .section-eyebrow,
-.brand-story p {
+.expect-heading {
+    max-width: 42rem;
+    margin-bottom: 2.4rem;
+}
+
+.expect-heading .section-eyebrow,
+.expect-step p {
     color: var(--blush);
 }
 
-.brand-story h2 {
+.expect-heading h2 {
     color: var(--cream);
 }
 
-.brand-story-shell {
-    max-width: 62rem;
-    text-align: center;
+.expect-list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+    padding: 0;
+    list-style: none;
 }
 
-.brand-story-shell h2 {
-    font-size: clamp(3rem, 5vw, 5.5rem);
-    margin-bottom: 1rem;
+.expect-step {
+    min-width: 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--brand-bright);
 }
 
-.brand-story-shell p:last-child {
-    max-width: 42rem;
-    margin: 0 auto;
-    font-size: 1.08rem;
-    line-height: 1.9;
+.expect-number {
+    color: var(--blush);
+    font-family: var(--heading);
+    font-size: 1.6rem;
+}
+
+.expect-step h3 {
+    margin: 0.75rem 0;
+    color: var(--cream);
+    font-size: clamp(1.7rem, 2.4vw, 2.3rem);
+}
+
+.expect-step p {
+    font-size: 0.9rem;
+    line-height: 1.7;
 }
 
 .services {
@@ -493,9 +541,7 @@ p {
     color: var(--cream);
 }
 
-.services h2,
-.services .service-card h3,
-.services .service-card p {
+.services h2 {
     color: var(--cream);
 }
 
@@ -508,54 +554,80 @@ p {
     color: var(--cream);
 }
 
-.service-grid {
+.service-stack {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 1.1rem;
+    grid-template-columns: minmax(0, 1fr);
+    padding-bottom: 42vh;
 }
 
 .service-card {
-    position: relative;
+    align-self: start;
+    position: sticky;
+    top: 6rem;
+    z-index: var(--stack-index, 1);
+    height: min(64vh, 42rem);
+    min-height: 28rem;
+    margin-bottom: 38vh;
+    padding: 0;
     overflow: hidden;
-    padding: 2rem 1.4rem 1.5rem;
     border: 1px solid var(--brand-bright);
-    border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--cream) 3%, transparent);
-    min-height: 17rem;
-    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+    border-radius: var(--radius-lg);
+    background: var(--ink);
+    isolation: isolate;
+    transform: scale(var(--stack-scale, 1)) rotate(var(--stack-tilt, 0deg));
+    transform-origin: 50% 12%;
+    transition: border-color 0.35s ease, box-shadow 0.35s ease;
 }
 
-.service-card::after {
+.service-card:last-child {
+    margin-bottom: 0;
+}
+
+.service-card::before {
     content: '';
     position: absolute;
-    left: 1.4rem;
-    right: 1.4rem;
-    bottom: 1rem;
-    height: 1px;
-    background: var(--brand-bright);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    inset: 0;
+    z-index: 1;
+    background:
+        linear-gradient(90deg, rgba(20, 8, 10, 0.96) 0%, rgba(20, 8, 10, 0.82) 42%, rgba(20, 8, 10, 0.18) 100%),
+        linear-gradient(0deg, rgba(20, 8, 10, 0.4), transparent 60%);
+    pointer-events: none;
+}
+
+.service-image {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 38%;
+}
+
+.service-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: min(40rem, 72%);
+    height: 100%;
+    padding: clamp(2rem, 6vw, 5rem);
 }
 
 .service-number {
     display: block;
-    margin-bottom: 1.2rem;
+    margin-bottom: 0.8rem;
     color: var(--blush);
     font-family: var(--heading);
-    font-size: 1.7rem;
+    font-size: 1.35rem;
     font-weight: 300;
 }
 
 .service-card:hover {
-    transform: translateY(-6px);
     border-color: var(--brand-bright);
-    box-shadow: 0 16px 44px rgba(196, 42, 68, 0.2);
-}
-
-.service-card:hover::after,
-.service-card:focus-within::after {
-    transform: scaleX(1);
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.35);
 }
 
 .service-icon {
@@ -564,7 +636,7 @@ p {
     justify-content: center;
     width: 2.4rem;
     height: 2.4rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     border: 1px solid var(--brand-bright);
     border-radius: 50%;
     background: var(--brand);
@@ -579,14 +651,68 @@ p {
 }
 
 .service-card h3 {
-    font-size: clamp(2rem, 2vw, 2.5rem);
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.7rem;
+    color: var(--cream);
+    font-size: clamp(3rem, 7vw, 6.4rem);
+    line-height: 0.88;
 }
 
 .service-card p {
-    font-size: 0.97rem;
-    line-height: 1.8;
-    color: color-mix(in srgb, var(--cream) 88%, transparent);
+    max-width: 34rem;
+    color: color-mix(in srgb, var(--cream) 92%, transparent);
+    font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+    line-height: 1.75;
+}
+
+.service-details {
+    position: relative;
+    z-index: 2;
+    margin-top: 1rem;
+    border-top: 1px solid color-mix(in srgb, var(--blush) 48%, transparent);
+}
+
+.service-details summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    color: var(--blush);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    list-style: none;
+}
+
+.service-details summary::-webkit-details-marker {
+    display: none;
+}
+
+.service-details summary::after {
+    content: '+';
+    color: var(--cream);
+    font-size: 1rem;
+}
+
+.service-details[open] summary::after {
+    content: '−';
+}
+
+.service-details p {
+    margin: 0 0 0.45rem;
+    font-size: 0.82rem;
+color: var(--blush);
+}
+
+.service-details a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--cream);
+    font-size: 0.72rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
 }
 
 .experience {
@@ -1147,6 +1273,7 @@ p {
     justify-content: space-between;
     gap: 1.5rem;
     min-height: 6rem;
+    padding: 1.25rem 0;
 }
 
 .footer-brand,
@@ -1177,10 +1304,39 @@ p {
     flex-wrap: wrap;
 }
 
+.footer-contact,
+.footer-actions {
+    display: grid;
+    align-content: center;
+    gap: 0.35rem;
+    color: var(--cream);
+    font-size: 0.67rem;
+    letter-spacing: 0.04em;
+}
+
+.footer-contact {
+    max-width: 19rem;
+}
+
+.footer-contact p {
+    color: var(--blush);
+    font-size: inherit;
+}
+
+.footer-actions a:first-child {
+    color: var(--blush);
+}
+
+.footer-actions a:last-child {
+    color: var(--cream);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
 .whatsapp-float {
     position: fixed;
-    right: 1.2rem;
-    bottom: 1.2rem;
+    right: max(1.2rem, calc(env(safe-area-inset-right) + 0.75rem));
+    bottom: max(1.2rem, calc(env(safe-area-inset-bottom) + 0.75rem));
     z-index: 50;
     display: inline-flex;
     align-items: center;
@@ -1206,7 +1362,14 @@ p {
         padding 500ms cubic-bezier(0.22, 1, 0.36, 1),
         transform 400ms cubic-bezier(0.22, 1, 0.36, 1),
         background 300ms ease,
-        box-shadow 300ms ease;
+        box-shadow 300ms ease,
+        opacity 250ms ease;
+}
+
+.whatsapp-float.over-footer {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(0.75rem);
 }
 
 .whatsapp-float::before {
@@ -1296,12 +1459,6 @@ p {
 .reveal-d4 { --reveal-delay: 320ms; }
 .reveal-d5 { --reveal-delay: 400ms; }
 
-@media (max-width: 1100px) {
-    .service-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-}
-
 @media (max-width: 900px) {
     .split-intro,
     .experience-layout,
@@ -1342,8 +1499,18 @@ p {
 
     .footer-inner {
         flex-direction: column;
+        align-items: center;
         justify-content: center;
         padding: 1.4rem 0;
+    }
+
+    .expect-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .footer-contact,
+    .footer-actions {
+        text-align: center;
     }
 }
 
@@ -1428,12 +1595,34 @@ p {
         font-size: clamp(3.5rem, 14vw, 7rem);
     }
 
-    .service-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
     .contact-list {
         grid-template-columns: 1fr;
+    }
+
+    .service-stack {
+        padding-bottom: 0;
+    }
+
+    .service-card {
+        position: relative;
+        top: auto;
+        height: auto;
+        min-height: 31rem;
+        margin-bottom: 1rem;
+        transform: none !important;
+    }
+
+    .service-content {
+        justify-content: flex-end;
+        width: 100%;
+        min-height: 31rem;
+        padding: 2rem 1.5rem;
+    }
+
+    .service-card::before {
+        background:
+            linear-gradient(0deg, rgba(20, 8, 10, 0.96) 0%, rgba(20, 8, 10, 0.76) 48%, rgba(20, 8, 10, 0.12) 100%),
+            linear-gradient(90deg, rgba(20, 8, 10, 0.3), transparent);
     }
 
     .map-card {
@@ -1508,7 +1697,7 @@ p {
         grid-template-columns: 1fr;
     }
 
-    .service-grid {
+    .expect-list {
         grid-template-columns: 1fr;
     }
 
@@ -1520,6 +1709,19 @@ p {
 
     .map-actions {
         flex-direction: column;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        background:
+            linear-gradient(110deg, rgba(20, 8, 10, 0.92), rgba(20, 8, 10, 0.78) 58%, rgba(80, 14, 30, 0.6)),
+            url("assets/nirvana-hero-poster.svg") center / cover no-repeat,
+            var(--ink);
+    }
+
+    .hero::after {
+        background: linear-gradient(110deg, rgba(20, 8, 10, 0.92), rgba(20, 8, 10, 0.82) 62%, rgba(80, 14, 30, 0.72));
     }
 }
 
@@ -1555,5 +1757,22 @@ p {
 
     .experience-media img {
         transform: none !important;
+    }
+
+    .service-stack {
+        padding-bottom: 0;
+    }
+
+    .service-card {
+        position: relative;
+        top: auto;
+        height: auto;
+        min-height: 31rem;
+        margin-bottom: 1rem;
+        transform: none !important;
+    }
+
+    .service-content {
+        min-height: 31rem;
     }
 }

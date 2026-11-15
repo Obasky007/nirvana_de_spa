@@ -4,7 +4,11 @@
     var navMenu = document.getElementById('navMenu');
     var mobileMenuQuery = window.matchMedia('(max-width: 768px)');
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var heroVideo = document.querySelector('.hero-video');
+    var heroVideoMobileQuery = window.matchMedia('(max-width: 768px)');
     var reveals = document.querySelectorAll('.reveal');
+    var serviceCards = Array.from(document.querySelectorAll('.service-card'));
+    var serviceStackMobileQuery = window.matchMedia('(max-width: 768px)');
     var experienceImage = document.querySelector('.experience-media img');
     var galleryTriggers = Array.from(document.querySelectorAll('.gallery-trigger'));
     var lightbox = document.querySelector('.lightbox');
@@ -13,13 +17,75 @@
     var lightboxClose = document.querySelector('.lightbox-close');
     var lightboxPrevious = document.querySelector('.lightbox-prev');
     var lightboxNext = document.querySelector('.lightbox-next');
+    var lightboxStatus = document.querySelector('.lightbox-status');
+    var fallbackImages = document.querySelectorAll('[data-placeholder-fallback]');
+    var floatingWhatsApp = document.querySelector('.whatsapp-float');
+    var siteFooter = document.querySelector('.site-footer');
     var currentImageIndex = 0;
     var lastGalleryTrigger = null;
+    var scrollUpdatePending = false;
+
+    serviceCards.forEach(function (card, index) {
+        card.style.setProperty('--stack-index', String(index + 1));
+    });
+
+    function syncHeroVideo() {
+        if (!heroVideo) return;
+        if (reducedMotion || heroVideoMobileQuery.matches) {
+            heroVideo.pause();
+            return;
+        }
+
+        var playback = heroVideo.play();
+        if (playback && typeof playback.catch === 'function') {
+            playback.catch(function () {
+                heroVideo.classList.add('video-fallback');
+            });
+        }
+    }
+
+    function configureBookingLinks() {
+        document.querySelectorAll('a[href^="https://wa.me/2349069615677"]').forEach(function (link) {
+            var service = link.getAttribute('data-booking-service') || '____';
+            var message = 'Hello Nirvana De Spa, I would like to book an appointment. My preferred service is ' +
+                service + ', and my preferred date/time is ____.';
+            link.href = 'https://wa.me/2349069615677?text=' + encodeURIComponent(message);
+        });
+    }
+
+    function useImagePlaceholder(image) {
+        if (image.dataset.fallbackApplied) return;
+        image.dataset.fallbackApplied = 'true';
+        image.removeAttribute('srcset');
+        image.removeAttribute('sizes');
+        image.src = 'assets/nirvana-photo-placeholder.svg';
+        image.alt = 'Nirvana De Spa branded placeholder; client photography is not yet available.';
+    }
+
+    fallbackImages.forEach(function (image) {
+        image.addEventListener('error', function () {
+            useImagePlaceholder(image);
+        }, { once: true });
+
+        if (image.complete && image.naturalWidth === 0) {
+            useImagePlaceholder(image);
+        }
+    });
+
+    configureBookingLinks();
+    syncHeroVideo();
+    if (typeof heroVideoMobileQuery.addEventListener === 'function') {
+        heroVideoMobileQuery.addEventListener('change', syncHeroVideo);
+    } else {
+        heroVideoMobileQuery.addListener(syncHeroVideo);
+    }
 
     function handleScroll() {
         if (nav) {
             nav.classList.toggle('scrolled', window.scrollY > 24);
         }
+
+        updateServiceStack();
 
         if (!reducedMotion && experienceImage) {
             var bounds = experienceImage.getBoundingClientRect();
@@ -28,11 +94,56 @@
         }
     }
 
+    function updateServiceStack() {
+        var updates = [];
+
+        if (reducedMotion || serviceStackMobileQuery.matches) {
+            serviceCards.forEach(function (card) {
+                card.style.removeProperty('--stack-scale');
+                card.style.removeProperty('--stack-tilt');
+            });
+            return;
+        }
+
+        serviceCards.forEach(function (card, index) {
+            if (!serviceCards[index + 1]) return;
+
+            var nextCard = serviceCards[index + 1];
+            var cardHeight = card.offsetHeight;
+            var stickyTop = parseFloat(window.getComputedStyle(card).top) || 0;
+            var nextTop = nextCard.getBoundingClientRect().top;
+            var progress = Math.max(0, Math.min(1, (stickyTop + cardHeight - nextTop) / cardHeight));
+            var tiltDirection = index % 2 === 0 ? -1 : 1;
+
+            updates.push({
+                card: card,
+                scale: (1 - progress * 0.055).toFixed(3),
+                tilt: (tiltDirection * progress * 1.35).toFixed(2) + 'deg'
+            });
+        });
+
+        updates.forEach(function (update) {
+            var card = update.card;
+            card.style.setProperty('--stack-scale', update.scale);
+            card.style.setProperty('--stack-tilt', update.tilt);
+        });
+    }
+
+    function scheduleScrollUpdate() {
+        if (scrollUpdatePending) return;
+        scrollUpdatePending = true;
+        window.requestAnimationFrame(function () {
+            scrollUpdatePending = false;
+            handleScroll();
+        });
+    }
+
     function setMenuOpen(isOpen) {
         if (!navToggle || !navMenu) return;
         navMenu.classList.toggle('open', isOpen);
         navMenu.setAttribute('aria-hidden', String(!isOpen && mobileMenuQuery.matches));
         navToggle.setAttribute('aria-expanded', String(isOpen));
+        navToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
         document.body.classList.toggle('menu-open', isOpen);
     }
 
@@ -47,16 +158,38 @@
 
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', function () {
-            setMenuOpen(navToggle.getAttribute('aria-expanded') !== 'true');
+            var isOpen = navToggle.getAttribute('aria-expanded') !== 'true';
+            setMenuOpen(isOpen);
+            if (isOpen) {
+                var firstMenuLink = navMenu.querySelector('a');
+                if (firstMenuLink) firstMenuLink.focus();
+            }
         });
 
         navMenu.querySelectorAll('a').forEach(function (link) {
             link.addEventListener('click', function () {
-                setMenuOpen(false);
+                if (mobileMenuQuery.matches) {
+                    setMenuOpen(false);
+                    navToggle.focus();
+                }
             });
         });
 
         document.addEventListener('keydown', function (event) {
+            if (event.key === 'Tab' && navMenu.classList.contains('open')) {
+                var menuFocusables = [navToggle].concat(Array.from(navMenu.querySelectorAll('a[href]')));
+                var firstMenuItem = menuFocusables[0];
+                var lastMenuItem = menuFocusables[menuFocusables.length - 1];
+
+                if (event.shiftKey && document.activeElement === firstMenuItem) {
+                    event.preventDefault();
+                    lastMenuItem.focus();
+                } else if (!event.shiftKey && document.activeElement === lastMenuItem) {
+                    event.preventDefault();
+                    firstMenuItem.focus();
+                }
+            }
+
             if (event.key === 'Escape' && navMenu.classList.contains('open')) {
                 setMenuOpen(false);
                 navToggle.focus();
@@ -64,6 +197,7 @@
         });
 
         navMenu.setAttribute('aria-hidden', String(mobileMenuQuery.matches));
+        navToggle.setAttribute('aria-label', 'Open navigation menu');
         window.addEventListener('resize', syncMenuViewport);
         if (typeof mobileMenuQuery.addEventListener === 'function') {
             mobileMenuQuery.addEventListener('change', syncMenuViewport);
@@ -100,10 +234,15 @@
         var trigger = galleryTriggers[currentImageIndex];
         var image = trigger.querySelector('img');
         var caption = trigger.closest('figure').querySelector('figcaption');
+        var captionText = caption ? caption.textContent : image.alt;
 
-        lightboxImage.src = image.currentSrc || image.src;
+        lightboxImage.src = image.src;
+        delete lightboxImage.dataset.fallbackApplied;
         lightboxImage.alt = image.alt;
-        lightboxCaption.textContent = caption ? caption.textContent : image.alt;
+        lightboxCaption.textContent = captionText;
+        if (lightboxStatus) {
+            lightboxStatus.textContent = 'Image ' + (currentImageIndex + 1) + ' of ' + galleryTriggers.length + ': ' + captionText;
+        }
     }
 
     function restoreGalleryFocus() {
@@ -121,6 +260,10 @@
         trigger.addEventListener('click', function () {
             if (!lightbox || typeof lightbox.showModal !== 'function') return;
             lastGalleryTrigger = trigger;
+            var image = trigger.querySelector('img');
+            if (image && image.complete && image.naturalWidth === 0) {
+                useImagePlaceholder(image);
+            }
             updateLightbox(index);
             lightbox.showModal();
             if (lightboxClose) lightboxClose.focus();
@@ -128,6 +271,18 @@
     });
 
     if (lightbox && lightboxClose) {
+        if (lightboxImage) {
+            lightboxImage.addEventListener('error', function () {
+                if (lightboxImage.dataset.fallbackApplied) {
+                    closeLightbox();
+                    return;
+                }
+                lightboxImage.dataset.fallbackApplied = 'true';
+                lightboxImage.src = 'assets/nirvana-photo-placeholder.svg';
+                lightboxImage.alt = 'Nirvana De Spa branded placeholder; client photography is not yet available.';
+            });
+        }
+
         lightboxClose.addEventListener('click', function () {
             closeLightbox();
         });
@@ -169,6 +324,16 @@
         lightbox.addEventListener('close', restoreGalleryFocus);
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    if (floatingWhatsApp && siteFooter && 'IntersectionObserver' in window) {
+        var footerObserver = new IntersectionObserver(function (entries) {
+            floatingWhatsApp.classList.toggle('over-footer', entries[0].isIntersecting);
+        }, {
+            threshold: 0.08
+        });
+        footerObserver.observe(siteFooter);
+    }
+
+    window.addEventListener('scroll', scheduleScrollUpdate, { passive: true });
+    window.addEventListener('resize', scheduleScrollUpdate);
     handleScroll();
 })();
