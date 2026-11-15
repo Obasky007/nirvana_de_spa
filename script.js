@@ -5,11 +5,9 @@
     var mobileMenuQuery = window.matchMedia('(max-width: 768px)');
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var heroVideo = document.querySelector('.hero-video');
-    var heroVideoMobileQuery = window.matchMedia('(max-width: 768px)');
     var reveals = document.querySelectorAll('.reveal');
     var serviceCards = Array.from(document.querySelectorAll('.services .service-card'));
     var serviceStackMobileQuery = window.matchMedia('(max-width: 768px)');
-    var serviceStackFallbackQuery = window.matchMedia('(max-width: 768px) and (max-height: 560px)');
     var experienceImage = document.querySelector('.experience-media img');
     var galleryTriggers = Array.from(document.querySelectorAll('.gallery-trigger'));
     var lightbox = document.querySelector('.lightbox');
@@ -32,16 +30,39 @@
 
     function syncHeroVideo() {
         if (!heroVideo) return;
-        if (reducedMotion || heroVideoMobileQuery.matches) {
+        if (reducedMotion) {
             heroVideo.pause();
             return;
         }
 
+        heroVideo.classList.remove('video-fallback');
         var playback = heroVideo.play();
         if (playback && typeof playback.catch === 'function') {
             playback.catch(function () {
                 heroVideo.classList.add('video-fallback');
             });
+        }
+    }
+
+    if (heroVideo) {
+        var hero = document.querySelector('.hero');
+        heroVideo.addEventListener('playing', function () {
+            heroVideo.classList.remove('video-fallback');
+        });
+        heroVideo.addEventListener('error', function () {
+            heroVideo.classList.add('video-fallback');
+        });
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                heroVideo.pause();
+            } else {
+                syncHeroVideo();
+            }
+        });
+        if (hero) {
+            hero.addEventListener('pointerdown', function () {
+                if (heroVideo.paused) syncHeroVideo();
+            }, { passive: true });
         }
     }
 
@@ -75,11 +96,6 @@
 
     configureBookingLinks();
     syncHeroVideo();
-    if (typeof heroVideoMobileQuery.addEventListener === 'function') {
-        heroVideoMobileQuery.addEventListener('change', syncHeroVideo);
-    } else {
-        heroVideoMobileQuery.addListener(syncHeroVideo);
-    }
 
     function handleScroll() {
         if (nav) {
@@ -98,7 +114,7 @@
     function updateServiceStack() {
         var updates = [];
 
-        if (reducedMotion || serviceStackFallbackQuery.matches) {
+        if (reducedMotion) {
             serviceCards.forEach(function (card) {
                 card.style.removeProperty('--stack-scale');
             });
@@ -113,7 +129,7 @@
             var stickyTop = parseFloat(window.getComputedStyle(card).top) || 0;
             var nextTop = nextCard.getBoundingClientRect().top;
             var progress = Math.max(0, Math.min(1, (stickyTop + cardHeight - nextTop) / cardHeight));
-            var maximumScaleReduction = serviceStackMobileQuery.matches ? 0.035 : 0.055;
+            var maximumScaleReduction = serviceStackMobileQuery.matches ? 0.06 : 0.055;
 
             updates.push({
                 card: card,
