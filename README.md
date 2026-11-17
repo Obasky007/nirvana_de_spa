@@ -11,7 +11,7 @@ Luxury beauty salon and spa landing page for Nirvana De Spa in Abuja, Nigeria.
 - Google Fonts: Cormorant Garamond + Inter
 - Local SVG brand icon, hero poster, and image fallback in `assets/`
 - Local 1200 × 630 PNG social preview in `assets/`
-- Hero video plays on desktop; the poster is used on small screens and when motion is reduced
+- Hero and gallery videos play while hovered on devices with a fine hover pointer, then pause on pointer exit. The hero poster is used on small screens and when motion is reduced; gallery controls remain available when hover is unavailable.
 - Gallery images use responsive Unsplash sizes with a local fallback if an image fails to load
 
 The current editorial images are illustrative, not Nirvana De Spa client photography. Replace them with approved salon, service, and team photos when available.

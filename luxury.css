@@ -1,9 +1,9 @@
 :root {
-    --ink: #14080A;
-    --brand: #8E1B2E;
-    --brand-bright: #C42A44;
-    --cream: #F5ECE6;
-    --blush: #E9C9C3;
+    --ink: #4F3020;
+    --brand: #8F7058;
+    --brand-bright: #4F3020;
+    --cream: #D8C3A5;
+    --blush: #D8C3A5;
     --radius-sm: 1rem;
     --radius-md: 1.5rem;
     --radius-lg: 2rem;
@@ -23,13 +23,25 @@ html {
 }
 
 ::selection {
-    background: var(--brand);
+    background: var(--ink);
     color: var(--cream);
 }
 
 :focus-visible {
     outline: 2px solid var(--brand-bright);
     outline-offset: 4px;
+}
+
+.hero :focus-visible,
+.nav :focus-visible,
+.services :focus-visible,
+.instagram :focus-visible,
+.map-card :focus-visible,
+.lightbox :focus-visible,
+.contact :focus-visible,
+.final-cta :focus-visible,
+.site-footer :focus-visible {
+    outline-color: var(--cream);
 }
 
 .skip-link {
@@ -109,7 +121,7 @@ button {
     font-size: 0.7rem;
     letter-spacing: 0.22rem;
     text-transform: uppercase;
-    color: var(--brand);
+    color: var(--ink);
     margin-bottom: 1rem;
 }
 
@@ -238,7 +250,7 @@ p {
     border: 1px solid var(--brand-bright);
     border-radius: 999px;
     color: var(--cream);
-    background: var(--brand);
+    background: var(--ink);
     transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -247,6 +259,22 @@ p {
     background: var(--brand-bright);
     border-color: var(--brand-bright);
     transform: translateY(-1px);
+}
+
+@media (min-width: 769px) and (max-width: 980px) {
+    .nav-inner {
+        gap: 0.75rem;
+    }
+
+    .nav-menu {
+        gap: 0.5rem;
+        font-size: 0.65rem;
+        letter-spacing: 0.05rem;
+    }
+
+    .nav-book {
+        padding: 0.6rem 0.7rem;
+    }
 }
 
 .nav-toggle {
@@ -270,6 +298,22 @@ p {
     transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
+.nav-toggle[aria-expanded="true"] {
+    background: var(--ink);
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(0.4rem) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-0.4rem) rotate(-45deg);
+}
+
 .hero {
     position: relative;
     min-height: 100vh;
@@ -278,8 +322,7 @@ p {
     align-items: center;
     background:
         radial-gradient(ellipse at 72% 45%, color-mix(in srgb, var(--brand) 38%, transparent), transparent 55%),
-        linear-gradient(135deg, rgba(20, 8, 10, 0.72), rgba(142, 27, 46, 0.42)),
-        url("assets/nirvana-hero-poster.svg") center / cover no-repeat;
+        linear-gradient(135deg, rgba(79, 48, 32, 0.72), rgba(143, 112, 88, 0.42));
     color: var(--cream);
     overflow: hidden;
 }
@@ -296,6 +339,48 @@ p {
     will-change: transform;
 }
 
+.hero-shell {
+    position: relative;
+    z-index: 3;
+    padding: clamp(5rem, 12vh, 8rem) 0;
+}
+
+.hero-copy {
+    max-width: 54rem;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.hero-copy .section-eyebrow {
+    margin-bottom: 1.4rem;
+    color: var(--blush);
+}
+
+.hero-copy h1 {
+    margin-bottom: 1.2rem;
+    color: var(--cream);
+    font-size: clamp(3.2rem, 10vw, 8.5rem);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.055em;
+}
+
+.hero-description {
+    max-width: 34rem;
+    margin: 0 auto 1.25rem;
+    color: color-mix(in srgb, var(--cream) 88%, transparent);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    line-height: 1.8;
+}
+
+.hero-services {
+    margin-bottom: 1.8rem;
+    color: var(--blush);
+    font-size: 0.68rem;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+}
+
 .hero-video.video-fallback {
     display: none;
 }
@@ -305,7 +390,7 @@ p {
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: linear-gradient(110deg, rgba(20, 8, 10, 0.85), rgba(20, 8, 10, 0.58) 56%, rgba(142, 27, 46, 0.35));
+    background: linear-gradient(110deg, rgba(79, 48, 32, 0.85), rgba(79, 48, 32, 0.58) 56%, rgba(143, 112, 88, 0.35));
     pointer-events: none;
 }
 
@@ -320,75 +405,6 @@ p {
     border: 1px solid var(--brand-bright);
     border-radius: 50%;
     transform: translateY(-50%);
-}
-
-.hero-shell {
-    position: relative;
-    z-index: 3;
-    padding: 7rem 0 6rem;
-}
-
-.hero-copy {
-    position: relative;
-    z-index: 2;
-    max-width: 60rem;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.eyebrow {
-    font-size: 0.68rem;
-    letter-spacing: 0.28rem;
-    text-transform: uppercase;
-    color: var(--blush);
-    margin-bottom: 1.8rem;
-}
-
-.hero-copy h1 {
-    display: grid;
-    gap: 0;
-    color: var(--cream);
-    font-size: clamp(5rem, 13vw, 12rem);
-    font-weight: 300;
-    line-height: 0.72;
-    letter-spacing: -0.065em;
-    margin-bottom: 1.8rem;
-}
-
-.hero-line {
-    display: block;
-    opacity: 0;
-    animation: hero-line-reveal 850ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.hero-line:nth-child(2) {
-    animation-delay: 160ms;
-}
-
-.hero-line:nth-child(3) {
-    animation-delay: 320ms;
-}
-
-.hero-copy h1 em {
-    color: var(--blush);
-    font-weight: 300;
-    font-style: italic;
-}
-
-.lede {
-    max-width: 36rem;
-    margin: 0 auto 2rem;
-    color: color-mix(in srgb, var(--cream) 88%, transparent);
-    font-size: 1rem;
-    line-height: 1.85;
-}
-
-.cta-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 0;
 }
 
 .btn {
@@ -412,13 +428,13 @@ p {
 
 .btn-primary {
     color: var(--cream);
-    background: var(--brand);
+    background: var(--ink);
 }
 
 .btn-primary:hover,
 .btn-primary:focus-visible {
     background: var(--brand-bright);
-    box-shadow: 0 10px 40px rgba(196, 42, 68, 0.35);
+    box-shadow: 0 10px 40px rgba(143, 112, 88, 0.35);
 }
 
 .btn-secondary {
@@ -427,43 +443,9 @@ p {
     border: 1px solid var(--cream);
 }
 
-.scroll-indicator {
-    position: absolute;
-    left: 50%;
-    bottom: 1.6rem;
-    z-index: 3;
-    display: grid;
-    justify-items: center;
-    gap: 0.55rem;
-    color: var(--cream);
-    font-size: 0.56rem;
-    letter-spacing: 0.2rem;
-    text-transform: uppercase;
-    transform: translateX(-50%);
-}
-
-.scroll-indicator::after {
-    content: '';
-    width: 1px;
-    height: 2.4rem;
-    background: var(--brand-bright);
-    transform-origin: top;
-    animation: scroll-pulse 1.8s ease-in-out infinite;
-}
-
-@keyframes hero-line-reveal {
-    from { opacity: 0; transform: translateY(1.1em); filter: blur(7px); }
-    to { opacity: 1; transform: translateY(0); filter: blur(0); }
-}
-
 @keyframes hero-ken-burns {
     from { transform: scale(1.04); }
     to { transform: scale(1.14) translate3d(-1.5%, 1%, 0); }
-}
-
-@keyframes scroll-pulse {
-    0%, 100% { transform: scaleY(0.55); opacity: 0.55; }
-    50% { transform: scaleY(1); opacity: 1; }
 }
 
 .about {
@@ -485,56 +467,6 @@ p {
     font-size: 1.12rem;
     line-height: 1.9;
     max-width: 33rem;
-}
-
-.what-to-expect {
-    background: var(--ink);
-    color: var(--cream);
-}
-
-.expect-heading {
-    max-width: 42rem;
-    margin-bottom: 2.4rem;
-}
-
-.expect-heading .section-eyebrow,
-.expect-step p {
-    color: var(--blush);
-}
-
-.expect-heading h2 {
-    color: var(--cream);
-}
-
-.expect-list {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.5rem;
-    padding: 0;
-    list-style: none;
-}
-
-.expect-step {
-    min-width: 0;
-    padding-top: 1rem;
-    border-top: 1px solid var(--brand-bright);
-}
-
-.expect-number {
-    color: var(--blush);
-    font-family: var(--heading);
-    font-size: 1.6rem;
-}
-
-.expect-step h3 {
-    margin: 0.75rem 0;
-    color: var(--cream);
-    font-size: clamp(1.7rem, 2.4vw, 2.3rem);
-}
-
-.expect-step p {
-    font-size: 0.9rem;
-    line-height: 1.7;
 }
 
 .services {
@@ -573,13 +505,13 @@ p {
     top: 6rem;
     z-index: var(--stack-index, 1);
     min-height: min(64svh, 42rem);
-    margin-bottom: 0;
+    margin-bottom: clamp(0.75rem, 1.6vw, 1.25rem);
     padding: 0;
     overflow: hidden;
     border: 1px solid var(--brand-bright);
     border-radius: var(--radius-lg);
     background: var(--ink);
-    box-shadow: 0 14px 42px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 14px 42px rgba(79, 48, 32, 0.2);
     isolation: isolate;
     transform: scale(var(--stack-scale, 1));
     transform-origin: 50% 12%;
@@ -590,14 +522,58 @@ p {
     margin-bottom: 0;
 }
 
+.booking-section {
+    background: var(--cream);
+}
+
+.founder {
+    background: color-mix(in srgb, var(--blush) 22%, var(--cream));
+}
+
+.founder-layout {
+    display: grid;
+    grid-template-columns: minmax(14rem, 0.8fr) minmax(0, 1.2fr);
+    align-items: center;
+    gap: clamp(2rem, 6vw, 6rem);
+    max-width: 980px;
+}
+
+.founder-portrait {
+    width: min(100%, 24rem);
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    background: var(--ink);
+    box-shadow: 0 18px 48px rgba(79, 48, 32, 0.12);
+}
+
+.founder-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.founder-copy h2 {
+    max-width: 12ch;
+    margin-bottom: 1.25rem;
+}
+
+.founder-copy > p:last-child {
+    max-width: 36rem;
+    color: color-mix(in srgb, var(--ink) 76%, transparent);
+    font-size: 1rem;
+    line-height: 1.85;
+}
+
 .service-card::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: 1;
     background:
-        linear-gradient(90deg, rgba(20, 8, 10, 0.96) 0%, rgba(20, 8, 10, 0.82) 42%, rgba(20, 8, 10, 0.18) 100%),
-        linear-gradient(0deg, rgba(20, 8, 10, 0.4), transparent 60%);
+        linear-gradient(90deg, rgba(79, 48, 32, 0.96) 0%, rgba(79, 48, 32, 0.82) 42%, rgba(79, 48, 32, 0.18) 100%),
+        linear-gradient(0deg, rgba(79, 48, 32, 0.4), transparent 60%);
     pointer-events: none;
 }
 
@@ -634,7 +610,7 @@ p {
 
 .service-card:hover {
     border-color: var(--brand-bright);
-    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 22px 60px rgba(79, 48, 32, 0.35);
 }
 
 .service-icon {
@@ -646,7 +622,7 @@ p {
     margin-bottom: 1rem;
     border: 1px solid var(--brand-bright);
     border-radius: 50%;
-    background: var(--brand);
+    background: var(--ink);
     color: var(--cream);
     font-size: 0.95rem;
     transition: background 0.3s ease, transform 0.3s ease;
@@ -844,7 +820,7 @@ color: var(--blush);
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: rgba(142, 27, 46, 0.25);
+    background: rgba(143, 112, 88, 0.25);
     mix-blend-mode: multiply;
     pointer-events: none;
     transition: opacity 0.45s ease;
@@ -1003,7 +979,7 @@ color: var(--blush);
 .map-tint {
     position: absolute;
     inset: 0;
-    background: rgba(142, 27, 46, 0.18);
+    background: rgba(143, 112, 88, 0.18);
     mix-blend-mode: multiply;
     pointer-events: none;
     transition: opacity 0.45s ease;
@@ -1111,7 +1087,7 @@ color: var(--blush);
     place-items: center;
     border: 1px solid var(--brand-bright);
     border-radius: 50%;
-    background: var(--brand);
+    background: var(--ink);
     color: var(--cream);
     cursor: pointer;
     font-size: 1.5rem;
@@ -1133,7 +1109,7 @@ color: var(--blush);
 }
 
 .contact {
-    background: var(--brand);
+    background: var(--ink);
     color: var(--cream);
 }
 
@@ -1150,7 +1126,7 @@ color: var(--blush);
 
 .contact-card,
 .booking-card {
-    background: color-mix(in srgb, var(--ink) 18%, transparent);
+    background: color-mix(in srgb, var(--brand) 24%, transparent);
     border: 1px solid var(--brand-bright);
     border-radius: var(--radius-md);
     padding: clamp(2rem, 3vw, 2.7rem);
@@ -1247,6 +1223,143 @@ color: var(--blush);
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--cream);
+}
+
+.booking-wizard {
+    width: min(100%, 42rem);
+    margin: 0 auto;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    border: 1px solid color-mix(in srgb, var(--brand) 16%, transparent);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--cream) 92%, var(--brand));
+    box-shadow: 0 12px 36px rgba(79, 48, 32, 0.06);
+}
+
+.booking-wizard-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.booking-wizard-heading .section-eyebrow {
+    margin-bottom: 0.45rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.15rem;
+}
+
+.booking-wizard-heading h2 {
+    color: var(--ink);
+    font-size: clamp(2rem, 3.5vw, 2.7rem);
+}
+
+.booking-wizard-count {
+    flex: 0 0 auto;
+    padding-bottom: 0.15rem;
+    color: var(--ink);
+    font-size: 0.7rem;
+}
+
+.booking-wizard-progress {
+    height: 3px;
+    margin-bottom: 1.4rem;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--brand) 16%, transparent);
+}
+
+.booking-wizard-progress span {
+    display: block;
+    width: 20%;
+    height: 100%;
+    background: var(--brand);
+    transition: width 0.35s ease;
+}
+
+.booking-step[hidden],
+.booking-wizard-actions [hidden] {
+    display: none !important;
+}
+
+.booking-step {
+    display: grid;
+    gap: 0.65rem;
+    margin-bottom: 1.1rem;
+}
+
+.booking-step h3 {
+    margin-bottom: 0.2rem;
+    color: var(--ink);
+    font-family: var(--heading);
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
+    line-height: 1;
+}
+
+.booking-step label {
+    color: var(--ink);
+    font-size: 0.7rem;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+}
+
+.booking-step label span {
+    color: color-mix(in srgb, var(--ink) 62%, transparent);
+}
+
+.booking-step input,
+.booking-step select,
+.booking-step textarea {
+    width: 100%;
+    min-height: 3.1rem;
+    padding: 0.8rem 0.9rem;
+    border: 1px solid color-mix(in srgb, var(--brand) 22%, transparent);
+    border-radius: 0.7rem;
+    background: var(--cream);
+    color: var(--ink);
+    font: inherit;
+}
+
+.booking-step input,
+.booking-step select {
+    color-scheme: light;
+}
+
+.booking-step textarea {
+    min-height: 6rem;
+    resize: vertical;
+}
+
+.booking-step input:focus-visible,
+.booking-step select:focus-visible,
+.booking-step textarea:focus-visible {
+    outline-color: var(--brand);
+}
+
+.booking-field-note {
+    color: color-mix(in srgb, var(--ink) 66%, transparent);
+    font-size: 0.76rem;
+    line-height: 1.55;
+}
+
+.booking-wizard-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.booking-wizard-actions .btn {
+    flex: 1 1 7rem;
+    width: auto;
+    min-height: 2.9rem;
+    padding: 0.75rem 0.8rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.07rem;
+    text-align: center;
+}
+
+.booking-wizard-actions .btn-secondary {
+    color: var(--ink);
+    border-color: color-mix(in srgb, var(--brand) 35%, transparent);
 }
 
 .final-cta {
@@ -1356,9 +1469,9 @@ color: var(--blush);
     overflow: hidden;
     border-radius: 999px;
     border: 1px solid var(--brand-bright);
-    background: var(--brand);
+    background: var(--ink);
     color: var(--cream);
-    box-shadow: 0 10px 40px rgba(196, 42, 68, 0.28);
+    box-shadow: 0 10px 40px rgba(143, 112, 88, 0.28);
     font-size: 0.72rem;
     letter-spacing: 0.12rem;
     text-transform: uppercase;
@@ -1397,12 +1510,12 @@ color: var(--blush);
 @media (hover: hover) {
     .whatsapp-float:hover,
     .whatsapp-float:focus-visible {
-        width: 10.5rem;
+        width: 12.5rem;
         gap: 0.65rem;
         padding: 0 1.25rem;
         transform: translateY(-4px);
         background: var(--brand-bright);
-        box-shadow: 0 10px 40px rgba(196, 42, 68, 0.35);
+        box-shadow: 0 10px 40px rgba(143, 112, 88, 0.35);
     }
 }
 
@@ -1433,7 +1546,7 @@ color: var(--blush);
 @media (hover: hover) {
     .whatsapp-float:hover span,
     .whatsapp-float:focus-visible span {
-        max-width: 7rem;
+        max-width: 8rem;
         opacity: 1;
         transform: translateX(0);
     }
@@ -1469,13 +1582,25 @@ color: var(--blush);
 @media (max-width: 900px) {
     .split-intro,
     .experience-layout,
+    .founder-layout,
     .contact-layout,
     .map-layout {
         grid-template-columns: 1fr;
     }
 
-    .hero-copy {
-        max-width: 100%;
+    .founder-portrait {
+        width: min(58vw, 18rem);
+        margin: 0 auto;
+    }
+
+    .founder-copy {
+        text-align: center;
+    }
+
+    .founder-copy h2,
+    .founder-copy > p:last-child {
+        margin-right: auto;
+        margin-left: auto;
     }
 
     .gallery-grid {
@@ -1509,10 +1634,6 @@ color: var(--blush);
         align-items: center;
         justify-content: center;
         padding: 1.4rem 0;
-    }
-
-    .expect-list {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .footer-contact,
@@ -1583,7 +1704,7 @@ color: var(--blush);
         width: auto;
         padding: 0.8rem 1.4rem;
         border-color: var(--brand-bright);
-        background: var(--brand);
+        background: var(--ink);
         font-family: var(--body);
         font-size: 0.75rem;
         letter-spacing: 0.12em;
@@ -1596,10 +1717,6 @@ color: var(--blush);
     .hero {
         min-height: 100vh;
         min-height: 100svh;
-    }
-
-    .hero-copy h1 {
-        font-size: clamp(3.5rem, 14vw, 7rem);
     }
 
     .contact-list {
@@ -1624,8 +1741,8 @@ color: var(--blush);
 
     .service-card::before {
         background:
-            linear-gradient(0deg, rgba(20, 8, 10, 0.96) 0%, rgba(20, 8, 10, 0.76) 48%, rgba(20, 8, 10, 0.12) 100%),
-            linear-gradient(90deg, rgba(20, 8, 10, 0.3), transparent);
+            linear-gradient(0deg, rgba(79, 48, 32, 0.96) 0%, rgba(79, 48, 32, 0.76) 48%, rgba(79, 48, 32, 0.12) 100%),
+            linear-gradient(90deg, rgba(79, 48, 32, 0.3), transparent);
     }
 
     .map-card {
@@ -1682,12 +1799,6 @@ color: var(--blush);
         min-height: 78px;
     }
 
-    .cta-row {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.55rem;
-    }
-
     .btn {
         width: 100%;
         padding: 0.9rem 1rem;
@@ -1700,8 +1811,8 @@ color: var(--blush);
         grid-template-columns: 1fr;
     }
 
-    .expect-list {
-        grid-template-columns: 1fr;
+    .booking-wizard-actions .btn {
+        flex-basis: calc(50% - 0.3rem);
     }
 
     .map-frame,
@@ -1716,6 +1827,14 @@ color: var(--blush);
 }
 
 @media (max-width: 768px) and (max-height: 560px) {
+    .nav-menu {
+        justify-content: flex-start;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding-top: 5rem;
+        padding-bottom: 1rem;
+    }
+
     .service-stack::after {
         height: 16svh;
     }
@@ -1750,13 +1869,12 @@ color: var(--blush);
 @media (max-width: 768px) {
     .hero {
         background:
-            linear-gradient(110deg, rgba(20, 8, 10, 0.92), rgba(20, 8, 10, 0.78) 58%, rgba(80, 14, 30, 0.6)),
-            url("assets/nirvana-hero-poster.svg") center / cover no-repeat,
+            linear-gradient(110deg, rgba(79, 48, 32, 0.92), rgba(79, 48, 32, 0.78) 58%, rgba(143, 112, 88, 0.6)),
             var(--ink);
     }
 
     .hero::after {
-        background: linear-gradient(110deg, rgba(20, 8, 10, 0.92), rgba(20, 8, 10, 0.82) 62%, rgba(80, 14, 30, 0.72));
+        background: linear-gradient(110deg, rgba(79, 48, 32, 0.92), rgba(79, 48, 32, 0.82) 62%, rgba(143, 112, 88, 0.72));
     }
 }
 
@@ -1779,15 +1897,10 @@ color: var(--blush);
         transform: none;
     }
 
-    .hero-line,
     .reveal {
         opacity: 1;
         transform: none;
         filter: none;
-    }
-
-    .hero-line {
-        animation: none !important;
     }
 
     .experience-media img {

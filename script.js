@@ -3,8 +3,13 @@
     var navToggle = document.querySelector('.nav-toggle');
     var navMenu = document.getElementById('navMenu');
     var mobileMenuQuery = window.matchMedia('(max-width: 768px)');
-    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var reducedMotion = reducedMotionQuery.matches;
+    var hoverQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
     var heroVideo = document.querySelector('.hero-video');
+    var galleryVideo = document.querySelector('.gallery-video');
+    var heroHovered = false;
+    var galleryHovered = false;
     var reveals = document.querySelectorAll('.reveal');
     var serviceCards = Array.from(document.querySelectorAll('.services .service-card'));
     var serviceStackMobileQuery = window.matchMedia('(max-width: 768px)');
@@ -28,20 +33,41 @@
         card.style.setProperty('--stack-index', String(index + 1));
     });
 
+    function playVideoOnHover(video) {
+        if (!video || reducedMotionQuery.matches || !hoverQuery.matches) return;
+        if (video === heroVideo) video.classList.remove('video-fallback');
+        var playback = video.play();
+        if (playback && typeof playback.catch === 'function') {
+            playback.catch(function (error) {
+                var stillHovered = video === heroVideo ? heroHovered : galleryHovered;
+                if (!stillHovered && error && error.name === 'AbortError') return;
+                if (video === heroVideo) video.classList.add('video-fallback');
+                console.warn('Unable to play video on hover.', error);
+            });
+        }
+    }
+
     function syncHeroVideo() {
         if (!heroVideo) return;
-        if (reducedMotion) {
+        if (!heroHovered || reducedMotionQuery.matches || !hoverQuery.matches || serviceStackMobileQuery.matches) {
             heroVideo.pause();
             return;
         }
+        playVideoOnHover(heroVideo);
+    }
 
-        heroVideo.classList.remove('video-fallback');
-        var playback = heroVideo.play();
-        if (playback && typeof playback.catch === 'function') {
-            playback.catch(function () {
-                heroVideo.classList.add('video-fallback');
-            });
+    function syncGalleryVideo() {
+        if (!galleryVideo) return;
+        if (!galleryHovered || reducedMotionQuery.matches || !hoverQuery.matches) {
+            galleryVideo.pause();
+            return;
         }
+        playVideoOnHover(galleryVideo);
+    }
+
+    function syncVideos() {
+        syncHeroVideo();
+        syncGalleryVideo();
     }
 
     if (heroVideo) {
@@ -55,24 +81,192 @@
         document.addEventListener('visibilitychange', function () {
             if (document.hidden) {
                 heroVideo.pause();
+                if (galleryVideo) galleryVideo.pause();
             } else {
-                syncHeroVideo();
+                syncVideos();
             }
         });
         if (hero) {
-            hero.addEventListener('pointerdown', function () {
-                if (heroVideo.paused) syncHeroVideo();
-            }, { passive: true });
+            hero.addEventListener('pointerenter', function (event) {
+                if (event.pointerType === 'touch' || !hoverQuery.matches) return;
+                heroHovered = true;
+                syncHeroVideo();
+            });
+            hero.addEventListener('pointerleave', function () {
+                heroHovered = false;
+                heroVideo.pause();
+            });
+        }
+        if (typeof serviceStackMobileQuery.addEventListener === 'function') {
+            serviceStackMobileQuery.addEventListener('change', syncHeroVideo);
+        } else {
+            serviceStackMobileQuery.addListener(syncHeroVideo);
         }
     }
 
-    function configureBookingLinks() {
-        document.querySelectorAll('a[href^="https://wa.me/2349069615677"]').forEach(function (link) {
-            var service = link.getAttribute('data-booking-service') || '____';
-            var message = 'Hello Nirvana De Spa, I would like to book an appointment. My preferred service is ' +
-                service + ', and my preferred date/time is ____.';
-            link.href = 'https://wa.me/2349069615677?text=' + encodeURIComponent(message);
+    if (galleryVideo) {
+        galleryVideo.addEventListener('pointerenter', function (event) {
+            if (event.pointerType === 'touch' || !hoverQuery.matches) return;
+            galleryHovered = true;
+            syncGalleryVideo();
         });
+        galleryVideo.addEventListener('pointerleave', function () {
+            galleryHovered = false;
+            galleryVideo.pause();
+        });
+    }
+
+    function addMediaChangeListener(query, listener) {
+        if (typeof query.addEventListener === 'function') {
+            query.addEventListener('change', listener);
+        } else {
+            query.addListener(listener);
+        }
+    }
+    addMediaChangeListener(hoverQuery, syncVideos);
+    addMediaChangeListener(reducedMotionQuery, syncVideos);
+
+    function initializeBookingWizard() {
+        var wizard = document.querySelector('[data-booking-wizard]');
+        if (!wizard) return;
+
+        var form = wizard.querySelector('[data-booking-form]');
+        var steps = Array.from(wizard.querySelectorAll('[data-booking-step]'));
+        var stepCount = steps.length;
+        var currentStep = 0;
+        var stepCountLabel = wizard.querySelector('[data-booking-count]');
+        var progress = wizard.querySelector('[data-booking-progress]');
+        var progressFill = progress ? progress.querySelector('span') : null;
+        var backButton = wizard.querySelector('[data-booking-back]');
+        var skipButton = wizard.querySelector('[data-booking-skip]');
+        var nextButton = wizard.querySelector('[data-booking-next]');
+        var submitButton = wizard.querySelector('[data-booking-submit]');
+        var dateInput = wizard.querySelector('input[type="date"]');
+
+        if (!form || !stepCount) return;
+
+        if (dateInput) {
+            var today = new Date();
+            today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+            dateInput.min = today.toISOString().slice(0, 10);
+        }
+
+        function showStep(focusHeading) {
+            steps.forEach(function (step, index) {
+                step.hidden = index !== currentStep;
+            });
+
+            var currentStepLabel = 'Step ' + (currentStep + 1) + ' of ' + stepCount;
+            if (stepCountLabel) stepCountLabel.textContent = currentStepLabel;
+            if (progress) {
+                progress.setAttribute('aria-valuenow', String(currentStep + 1));
+                progress.setAttribute('aria-valuetext', currentStepLabel);
+            }
+            if (progressFill) {
+                progressFill.style.width = ((currentStep + 1) / stepCount * 100) + '%';
+            }
+
+            if (backButton) backButton.hidden = currentStep === 0;
+            if (skipButton) skipButton.hidden = currentStep === stepCount - 1;
+            if (nextButton) nextButton.hidden = currentStep === stepCount - 1;
+            if (submitButton) submitButton.hidden = currentStep !== stepCount - 1;
+
+            if (focusHeading) {
+                var heading = steps[currentStep].querySelector('h3');
+                if (heading) heading.focus();
+            }
+        }
+
+        function moveForward(clearCurrentStep) {
+            if (clearCurrentStep) {
+                steps[currentStep].querySelectorAll('input, select, textarea').forEach(function (field) {
+                    field.value = '';
+                });
+            }
+            if (currentStep < stepCount - 1) {
+                currentStep += 1;
+                showStep(true);
+            }
+        }
+
+        function goNext() {
+            var field = steps[currentStep].querySelector('input, select, textarea');
+            if (field && !field.checkValidity()) {
+                field.reportValidity();
+                return;
+            }
+            moveForward(false);
+        }
+
+        function formatTime(value) {
+            var parts = value.split(':');
+            if (parts.length !== 2) return value;
+            var hour = Number(parts[0]);
+            var minute = parts[1];
+            var suffix = hour >= 12 ? 'PM' : 'AM';
+            return (hour % 12 || 12) + ':' + minute + ' ' + suffix;
+        }
+
+        var serviceField = form.querySelector('select[name="service"]');
+        document.querySelectorAll('a[href="#booking"]').forEach(function (link) {
+            link.addEventListener('click', function () {
+                var service = link.getAttribute('data-booking-service');
+                if (serviceField && service && service !== '____') {
+                    serviceField.value = service;
+                }
+                currentStep = 0;
+                showStep(false);
+            });
+        });
+
+        if (backButton) {
+            backButton.addEventListener('click', function () {
+                if (currentStep > 0) {
+                    currentStep -= 1;
+                    showStep(true);
+                }
+            });
+        }
+
+        if (skipButton) {
+            skipButton.addEventListener('click', function () {
+                moveForward(true);
+            });
+        }
+
+        if (nextButton) {
+            nextButton.addEventListener('click', goNext);
+        }
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            if (currentStep < stepCount - 1) {
+                goNext();
+                return;
+            }
+
+            var values = new FormData(form);
+            var service = String(values.get('service') || '').trim();
+            var date = String(values.get('date') || '').trim();
+            var time = String(values.get('time') || '').trim();
+            var name = String(values.get('name') || '').trim();
+            var note = String(values.get('note') || '').trim();
+            var message = [
+                'Hello Nirvana De Spa, I would like to request an appointment.',
+                '',
+                'Service: ' + (service || 'Not sure yet')
+            ];
+
+            if (date) message.push('Preferred date: ' + date);
+            if (time) message.push('Preferred time: ' + formatTime(time));
+            if (name) message.push('Name: ' + name);
+            if (note) message.push('Note: ' + note);
+            message.push('', 'Please let me know your availability and current pricing.');
+
+            window.location.href = 'https://wa.me/2349069615677?text=' + encodeURIComponent(message.join('\n'));
+        });
+
+        showStep(false);
     }
 
     function useImagePlaceholder(image) {
@@ -94,7 +288,7 @@
         }
     });
 
-    configureBookingLinks();
+    initializeBookingWizard();
     syncHeroVideo();
 
     function handleScroll() {
