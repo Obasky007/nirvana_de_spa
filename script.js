@@ -5,126 +5,83 @@
     var mobileMenuQuery = window.matchMedia('(max-width: 768px)');
     var reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     var reducedMotion = reducedMotionQuery.matches;
-    var hoverQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
-    var heroVideo = document.querySelector('.hero-video');
-    var galleryVideo = document.querySelector('.gallery-video');
-    var heroHovered = false;
-    var galleryHovered = false;
+    var ambientVideos = Array.from(document.querySelectorAll('[data-ambient-video]'));
     var reveals = document.querySelectorAll('.reveal');
     var serviceCards = Array.from(document.querySelectorAll('.services .service-card'));
     var serviceStackMobileQuery = window.matchMedia('(max-width: 768px)');
-    var experienceImage = document.querySelector('.experience-media img');
-    var galleryTriggers = Array.from(document.querySelectorAll('.gallery-trigger'));
-    var lightbox = document.querySelector('.lightbox');
-    var lightboxImage = document.querySelector('.lightbox-image');
-    var lightboxCaption = document.querySelector('.lightbox-caption');
-    var lightboxClose = document.querySelector('.lightbox-close');
-    var lightboxPrevious = document.querySelector('.lightbox-prev');
-    var lightboxNext = document.querySelector('.lightbox-next');
-    var lightboxStatus = document.querySelector('.lightbox-status');
+    var experienceImage = document.querySelector('.experience-media video');
     var fallbackImages = document.querySelectorAll('[data-placeholder-fallback]');
     var floatingWhatsApp = document.querySelector('.whatsapp-float');
     var siteFooter = document.querySelector('.site-footer');
-    var currentImageIndex = 0;
-    var lastGalleryTrigger = null;
     var scrollUpdatePending = false;
 
     serviceCards.forEach(function (card, index) {
         card.style.setProperty('--stack-index', String(index + 1));
     });
 
-    function playVideoOnHover(video) {
-        if (!video || reducedMotionQuery.matches || !hoverQuery.matches) return;
-        if (video === heroVideo) video.classList.remove('video-fallback');
+    function syncAmbientVideo(video) {
+        var bounds = video.getBoundingClientRect();
+        var isVisible = bounds.bottom > 0 && bounds.top < window.innerHeight
+            && bounds.right > 0 && bounds.left < window.innerWidth;
+        if (reducedMotion || document.hidden || !isVisible) {
+            video.pause();
+            return;
+        }
+
         var playback = video.play();
         if (playback && typeof playback.catch === 'function') {
             playback.catch(function (error) {
-                var stillHovered = video === heroVideo ? heroHovered : galleryHovered;
-                if (!stillHovered && error && error.name === 'AbortError') return;
-                if (video === heroVideo) video.classList.add('video-fallback');
-                console.warn('Unable to play video on hover.', error);
+                if (!error || error.name !== 'AbortError') {
+                    console.warn('Unable to play Nirvana De Spa video.', error);
+                }
             });
         }
     }
 
-    function syncHeroVideo() {
-        if (!heroVideo) return;
-        if (!heroHovered || reducedMotionQuery.matches || !hoverQuery.matches || serviceStackMobileQuery.matches) {
-            heroVideo.pause();
-            return;
-        }
-        playVideoOnHover(heroVideo);
-    }
-
-    function syncGalleryVideo() {
-        if (!galleryVideo) return;
-        if (!galleryHovered || reducedMotionQuery.matches || !hoverQuery.matches) {
-            galleryVideo.pause();
-            return;
-        }
-        playVideoOnHover(galleryVideo);
-    }
-
-    function syncVideos() {
-        syncHeroVideo();
-        syncGalleryVideo();
-    }
-
-    if (heroVideo) {
-        var hero = document.querySelector('.hero');
-        heroVideo.addEventListener('playing', function () {
-            heroVideo.classList.remove('video-fallback');
-        });
-        heroVideo.addEventListener('error', function () {
-            heroVideo.classList.add('video-fallback');
-        });
-        document.addEventListener('visibilitychange', function () {
-            if (document.hidden) {
-                heroVideo.pause();
-                if (galleryVideo) galleryVideo.pause();
+    var ambientVideoObserver = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                syncAmbientVideo(entry.target);
             } else {
-                syncVideos();
+                entry.target.pause();
             }
         });
-        if (hero) {
-            hero.addEventListener('pointerenter', function (event) {
-                if (event.pointerType === 'touch' || !hoverQuery.matches) return;
-                heroHovered = true;
-                syncHeroVideo();
-            });
-            hero.addEventListener('pointerleave', function () {
-                heroHovered = false;
-                heroVideo.pause();
-            });
-        }
-        if (typeof serviceStackMobileQuery.addEventListener === 'function') {
-            serviceStackMobileQuery.addEventListener('change', syncHeroVideo);
-        } else {
-            serviceStackMobileQuery.addListener(syncHeroVideo);
-        }
-    }
+    }) : null;
 
-    if (galleryVideo) {
-        galleryVideo.addEventListener('pointerenter', function (event) {
-            if (event.pointerType === 'touch' || !hoverQuery.matches) return;
-            galleryHovered = true;
-            syncGalleryVideo();
+    ambientVideos.forEach(function (video) {
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.addEventListener('error', function () {
+            console.error('Unable to load Nirvana De Spa video:', video.currentSrc || video.src);
         });
-        galleryVideo.addEventListener('pointerleave', function () {
-            galleryHovered = false;
-            galleryVideo.pause();
-        });
-    }
-
-    function addMediaChangeListener(query, listener) {
-        if (typeof query.addEventListener === 'function') {
-            query.addEventListener('change', listener);
+        if (ambientVideoObserver) {
+            ambientVideoObserver.observe(video);
         } else {
-            query.addListener(listener);
+            syncAmbientVideo(video);
         }
+    });
+
+    document.addEventListener('visibilitychange', function () {
+        ambientVideos.forEach(function (video) {
+            if (document.hidden) {
+                video.pause();
+            } else {
+                syncAmbientVideo(video);
+            }
+        });
+    });
+    if (typeof reducedMotionQuery.addEventListener === 'function') {
+        reducedMotionQuery.addEventListener('change', function (event) {
+            reducedMotion = event.matches;
+            ambientVideos.forEach(syncAmbientVideo);
+        });
+    } else {
+        reducedMotionQuery.addListener(function (event) {
+            reducedMotion = event.matches;
+            ambientVideos.forEach(syncAmbientVideo);
+        });
     }
-    addMediaChangeListener(hoverQuery, syncVideos);
-    addMediaChangeListener(reducedMotionQuery, syncVideos);
 
     function initializeBookingWizard() {
         var wizard = document.querySelector('[data-booking-wizard]');
@@ -289,11 +246,14 @@
     });
 
     initializeBookingWizard();
-    syncHeroVideo();
 
     function handleScroll() {
         if (nav) {
             nav.classList.toggle('scrolled', window.scrollY > 24);
+        }
+
+        if (!ambientVideoObserver) {
+            ambientVideos.forEach(syncAmbientVideo);
         }
 
         updateServiceStack();
@@ -434,102 +394,6 @@
         reveals.forEach(function (element) {
             element.classList.add('active');
         });
-    }
-
-    function updateLightbox(index) {
-        if (!galleryTriggers.length || !lightboxImage || !lightboxCaption) return;
-        currentImageIndex = (index + galleryTriggers.length) % galleryTriggers.length;
-        var trigger = galleryTriggers[currentImageIndex];
-        var image = trigger.querySelector('img');
-        var caption = trigger.closest('figure').querySelector('figcaption');
-        var captionText = caption ? caption.textContent : image.alt;
-
-        lightboxImage.src = image.src;
-        delete lightboxImage.dataset.fallbackApplied;
-        lightboxImage.alt = image.alt;
-        lightboxCaption.textContent = captionText;
-        if (lightboxStatus) {
-            lightboxStatus.textContent = 'Image ' + (currentImageIndex + 1) + ' of ' + galleryTriggers.length + ': ' + captionText;
-        }
-    }
-
-    function restoreGalleryFocus() {
-        if (lastGalleryTrigger) lastGalleryTrigger.focus();
-        if (lightboxImage) lightboxImage.removeAttribute('src');
-    }
-
-    function closeLightbox() {
-        if (!lightbox || !lightbox.open) return;
-        lightbox.close();
-        restoreGalleryFocus();
-    }
-
-    galleryTriggers.forEach(function (trigger, index) {
-        trigger.addEventListener('click', function () {
-            if (!lightbox || typeof lightbox.showModal !== 'function') return;
-            lastGalleryTrigger = trigger;
-            var image = trigger.querySelector('img');
-            if (image && image.complete && image.naturalWidth === 0) {
-                useImagePlaceholder(image);
-            }
-            updateLightbox(index);
-            lightbox.showModal();
-            if (lightboxClose) lightboxClose.focus();
-        });
-    });
-
-    if (lightbox && lightboxClose) {
-        if (lightboxImage) {
-            lightboxImage.addEventListener('error', function () {
-                if (lightboxImage.dataset.fallbackApplied) {
-                    closeLightbox();
-                    return;
-                }
-                lightboxImage.dataset.fallbackApplied = 'true';
-                lightboxImage.src = 'assets/nirvana-photo-placeholder.svg';
-                lightboxImage.alt = 'Nirvana De Spa branded placeholder; client photography is not yet available.';
-            });
-        }
-
-        lightboxClose.addEventListener('click', function () {
-            closeLightbox();
-        });
-
-        if (lightboxPrevious) {
-            lightboxPrevious.addEventListener('click', function () {
-                updateLightbox(currentImageIndex - 1);
-            });
-        }
-
-        if (lightboxNext) {
-            lightboxNext.addEventListener('click', function () {
-                updateLightbox(currentImageIndex + 1);
-            });
-        }
-
-        lightbox.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape') {
-                event.preventDefault();
-                closeLightbox();
-            } else if (event.key === 'ArrowLeft') {
-                event.preventDefault();
-                updateLightbox(currentImageIndex - 1);
-            } else if (event.key === 'ArrowRight') {
-                event.preventDefault();
-                updateLightbox(currentImageIndex + 1);
-            }
-        });
-
-        lightbox.addEventListener('cancel', function (event) {
-            event.preventDefault();
-            closeLightbox();
-        });
-
-        lightbox.addEventListener('click', function (event) {
-            if (event.target === lightbox) closeLightbox();
-        });
-
-        lightbox.addEventListener('close', restoreGalleryFocus);
     }
 
     if (floatingWhatsApp && siteFooter && 'IntersectionObserver' in window) {

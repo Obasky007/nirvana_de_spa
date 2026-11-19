@@ -9,12 +9,10 @@ Luxury beauty salon and spa landing page for Nirvana De Spa in Abuja, Nigeria.
 
 ## Assets and performance
 - Google Fonts: Cormorant Garamond + Inter
-- Local SVG brand icon, hero poster, and image fallback in `assets/`
+- Local SVG brand icon and founder-photo fallback in `assets/`
 - Local 1200 × 630 PNG social preview in `assets/`
-- Hero and gallery videos play while hovered on devices with a fine hover pointer, then pause on pointer exit. The hero poster is used on small screens and when motion is reduced; gallery controls remain available when hover is unavailable.
-- Gallery images use responsive Unsplash sizes with a local fallback if an image fails to load
-
-The current editorial images are illustrative, not Nirvana De Spa client photography. Replace them with approved salon, service, and team photos when available.
+- The same local video plays in the hero, services, experience, gallery, and Instagram sections while visible, then pauses offscreen. Gallery videos include playback controls.
+- The founder portrait is the only page image.
 
 ## SEO deployment
 Canonical, social metadata, `robots.txt`, and `sitemap.xml` use `https://nirvanadespa.vercel.app/`, as supplied in the refinement brief. Confirm this remains the production origin before deploying if the site moves to a custom domain.
